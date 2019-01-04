@@ -50,18 +50,43 @@ registers = [3115806,0,0,0,0,0]
 while registers[ip] < len(instructions):
     # if registers[ip] > 16:
     #     print("ip", registers[ip], "inst", instructions[registers[ip]], "registers", registers)
-    if registers[ip] == 28:
-        print(registers[5], registers[0])
+    # if registers[ip] == 28:
+    #     print(registers[5], registers[0])
     registers = do(registers, instructions[registers[ip]])
     registers[ip] += 1
 
 print(registers[0])
 
-registers = [0,0,0,0,0,0]
-while registers[ip] < len(instructions):
-    # if registers[ip] > 16:
-    #     print("ip", registers[ip], "inst", instructions[registers[ip]], "registers", registers)
-    if registers[ip] == 28:
-        print(registers[5], registers[0])
-    registers = do(registers, instructions[registers[ip]])
-    registers[ip] += 1
+# registers = [0,0,0,0,0,0]
+# while registers[ip] < len(instructions):
+#     # if registers[ip] > 16:
+#     #     print("ip", registers[ip], "inst", instructions[registers[ip]], "registers", registers)
+#     if registers[ip] == 28:
+#         print(registers[5], registers[0])
+#     registers = do(registers, instructions[registers[ip]])
+#     registers[ip] += 1
+
+
+def generate(seed):
+    r4 = seed | (2**16)
+    r5 = 13431073 
+
+    while True:
+        r3 = r4 & 255
+        r5 += r3
+        r5 %= 2**24
+        r5 *= 65899
+        r5 %= 2**24
+
+        if r4 < 256:
+            return r5
+        else:
+            r4 >>= 8
+    
+allRes = set()
+n = 0
+while n not in allRes:
+    allRes.add(n)
+    lastn, n = n, generate(n)
+print(lastn)
+# print(n)

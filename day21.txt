@@ -5,28 +5,28 @@ eqri 5 72 5
 addr 5 1 1
 seti 0 0 1
 seti 0 6 5
-bori 5 65536 4
-seti 13431073 4 5
-bani 4 255 3
-addr 5 3 5
-bani 5 16777215 5
-muli 5 65899 5
-bani 5 16777215 5
-gtir 256 4 3
+bori 5 65536 4      #(line 8) r4 = r5 | 2**16
+seti 13431073 4 5   # r5 = 13431073
+bani 4 255 3        #(line 10) r3 = lower 8 of r4
+addr 5 3 5          # r5 = r3 + r5
+bani 5 16777215 5   # r5 %= 2**24
+muli 5 65899 5      # r5 *= 65899
+bani 5 16777215 5   # r5 %= 2**24
+gtir 256 4 3        # if 256 > r4 jump to line 30, else jump to line 19
 addr 3 1 1
 addi 1 1 1
 seti 27 9 1
-seti 0 1 3
-addi 3 1 2
-muli 2 256 2
-gtrr 2 4 2
+seti 0 1 3   #(line 19) r3 = 0
+addi 3 1 2   #(line 20) r2 = r3 + 1
+muli 2 256 2 # r2 *= 256
+gtrr 2 4 2   # if r2 > r4, jump to line 28, else jump to line 26
 addr 2 1 1
 addi 1 1 1
 seti 25 4 1
-addi 3 1 3
-seti 17 8 1
-setr 3 4 4
-seti 7 7 1
-eqrr 5 0 3
+addi 3 1 3   #(line 26) r3 += 1
+seti 17 8 1  # jump to line 20
+setr 3 4 4   #(line 28) r4 = r3
+seti 7 7 1   # jump to line 10
+eqrr 5 0 3   #(line 30) if r5 == r0, halt, else jump to line 8
 addr 3 1 1
 seti 5 9 1
