@@ -1,11 +1,11 @@
 from common import *
 
-def line(s):
+def lineParse(s):
     return [(i[0], int(i[1:])) for i in s.split(",")]
 
-lines = filemap(line, "day3.txt")
+lines = filemap(lineParse, "day3.txt")
 
-grid = defaultdict(lambda: [None, None])
+grid = defaultdict(lambda: [None] * len(lines))
 for lineNum, line in enumerate(lines):
     x = 0
     y = 0
@@ -24,9 +24,9 @@ for lineNum, line in enumerate(lines):
 manhattan = 1e50
 steps = 1e50
 for (x, y), v in grid.items():
-    if v[0] is not None and v[1] is not None:
+    if all(i is not None for i in v):
         manhattan = min(manhattan, abs(x) + abs(y))
-        steps = min(steps, v[0] + v[1])
+        steps = min(steps, sum(v))
 
 print(manhattan)
 print(steps)
