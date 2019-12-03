@@ -1,68 +1,32 @@
 from common import *
-from collections import defaultdict
 
-lines = []
-with open("day3.txt") as f:
-    for line in f:
-        lines.append([(i[0], int(i[1:])) for i in line.split(",")])
+def line(s):
+    return [(i[0], int(i[1:])) for i in s.split(",")]
 
-grid = defaultdict(int)
-for lineNum, line in enumerate(lines):
-    x = 0
-    y = 0
-    
-    for direction, step in line:
-        dx = 0
-        dy = 0
-        if direction == "U":
-            dy = 1
-        elif direction == "D":
-            dy = -1
-        elif direction == "L":
-            dx = -1
-        elif direction == "R":
-            dx = 1
+lines = filemap(line, "day3.txt")
 
-        for _ in range(step):
-            x += dx
-            y += dy
-            grid[(x, y)] |= (lineNum + 1)
-
-best = 1e50
-for (x, y), v in grid.items():
-    if v == 3:
-        best = min(best, abs(x) + abs(y))
-
-print(best)
-
-intersections = [{}, {}]
-
+grid = defaultdict(lambda: [None, None])
 for lineNum, line in enumerate(lines):
     x = 0
     y = 0
     s = 0
     
     for direction, step in line:
-        dx = 0
-        dy = 0
-        if direction == "U":
-            dy = 1
-        elif direction == "D":
-            dy = -1
-        elif direction == "L":
-            dx = -1
-        elif direction == "R":
-            dx = 1
+        dx, dy = DIRECTIONS[direction]
 
         for _ in range(step):
             x += dx
             y += dy
             s += 1
+            if grid[(x, y)][lineNum] is None:
+                grid[(x, y)][lineNum] = s
 
-            if grid[(x, y)] == 3 and (x, y) not in intersections[lineNum]:
-                intersections[lineNum][(x, y)] = s
+manhattan = 1e50
+steps = 1e50
+for (x, y), v in grid.items():
+    if v[0] is not None and v[1] is not None:
+        manhattan = min(manhattan, abs(x) + abs(y))
+        steps = min(steps, v[0] + v[1])
 
-best = 1e50
-for i in intersections[0]:
-    best = min(best, intersections[0][i] + intersections[1][i])
-print(best)
+print(manhattan)
+print(steps)
