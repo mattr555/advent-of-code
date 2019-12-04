@@ -1,47 +1,46 @@
 from common import *
 
-def meets_criteria(n):
-    s = list(map(int, str(n)))
-    if len(s) != 6:
-        return False
-    last = -1
-    good = False
-    for i in range(len(s)):
-        if s[i] < last:
-            return False
-        elif s[i] == last:
-            good = True
-        last = s[i]
-    return good
+def digits(n):
+    n = abs(n)
+    ret = []
+    while n != 0:
+        ret.append(n % 10)
+        n //= 10
+    ret.reverse()
+    return ret
 
-def meets_extra_criteria(n):
-    s = list(map(int, str(n)))
+def check(n):
+    s = digits(n)
     if len(s) != 6:
-        return False
+        return False, False
+
     last = -1
-    good = False
-    repeats = 0
-    for i in range(len(s)):
-        if s[i] < last:
-            return False
-        elif s[i] == last:
+    good1 = False
+    good2 = False
+    repeats = 1
+    for i in s:
+        if i < last:
+            return False, False
+        elif i == last:
             repeats += 1
+            good1 = True
         else:
-            if repeats == 1:
-                good = True
-            repeats = 0
-        last = s[i]
-    if repeats == 1:
-        good = True
-    return good
+            if repeats == 2:
+                good2 = True
+            repeats = 1
+        last = i
+    if repeats == 2:
+        good2 = True
+    return good1, good2
 
 
-c = 0
-cc = 0
+count1 = 0
+count2 = 0
 for i in range(123257, 647016):
-    if meets_criteria(i):
-        c += 1
-    if meets_extra_criteria(i):
-        cc += 1
-print(c)
-print(cc)
+    good1, good2 = check(i)
+    if good1:
+        count1 += 1
+    if good2:
+        count2 += 1
+print(count1)
+print(count2)
