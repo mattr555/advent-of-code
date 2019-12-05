@@ -1,4 +1,4 @@
-from collections import defaultdict
+from collections import defaultdict, deque
 
 def filemap(func, filename, sep='\n'):
     with open(filename) as f:
