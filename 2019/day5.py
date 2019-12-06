@@ -39,7 +39,6 @@ def run(data, input_):
             else:
                 values.append(data[ip+ix+1])
 
-        v = 0
         skip_inc = False
         if op == 1:
             data[data[ip+3]] = values[0] + values[1]
