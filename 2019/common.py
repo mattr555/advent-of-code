@@ -20,8 +20,7 @@ DIRECTIONS = {
 
 
 def chunk(l, n):
-    for i in range(len(l) // n):
-        yield l[i*n:(i+1)*n]
+    return [l[i*n:(i+1)*n] for i in range(len(l) // n)]
 
 def denseGrid(r, c):
     return [[None] * c for _ in range(r)]

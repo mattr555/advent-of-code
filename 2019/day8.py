@@ -7,7 +7,7 @@ with open("day8.txt") as f:
     data = list(map(int, f.read().strip()))
 
 fewest = Counter([0] * HEIGHT * WIDTH)
-layers = list(chunk(data, HEIGHT * WIDTH))
+layers = chunk(data, HEIGHT * WIDTH)
 for layer in layers:
     c = Counter(layer)
     if c[0] < fewest[0]:
