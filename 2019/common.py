@@ -1,4 +1,5 @@
-from collections import defaultdict, deque
+from collections import defaultdict, deque, Counter
+import itertools
 
 def filemap(func, filename, sep='\n'):
     with open(filename) as f:
@@ -16,3 +17,12 @@ DIRECTIONS = {
     'D': (0, -1),
     'L': (-1, 0)
 }
+
+
+def chunk(l, n):
+    for i in range(len(l) // n):
+        yield l[i*n:(i+1)*n]
+
+def denseGrid(r, c):
+    return [[None] * c for _ in range(r)]
+
