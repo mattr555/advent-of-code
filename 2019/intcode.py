@@ -13,7 +13,7 @@ INST_PARAMS = {
 
 class IntcodeVM(object):
     def __init__(self, prog):
-        self.prog = prog
+        self.prog = list(prog)
         self.ip = 0
         self.input = deque()
         self.output = []

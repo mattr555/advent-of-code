@@ -25,7 +25,7 @@ for layer in layers:
 for r in chunk(grid, WIDTH):
     for i in r:
         if i == 0:
-            print("█", end="")
+            print(FULL_BLOCK, end="")
         else:
-            print(" ", end="")
+            print(LIGHT_SHADE, end="")
     print()
