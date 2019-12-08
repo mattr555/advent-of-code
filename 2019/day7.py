@@ -10,7 +10,7 @@ for perm in permutations(range(5)):
     for i in perm:
         vm = IntcodeVM(prog)
         vm.addInput([i, out])
-        vm.run_to_block()
+        vm.runToBlock()
         out = vm.output[0]
     m = max(out, m)
 
@@ -29,7 +29,7 @@ for perm in permutations(range(5, 10)):
     while True:
         vm = vms[amp]
         vm.addInput([out])
-        halted = vm.run_to_block()
+        halted = vm.runToBlock()
         out = vm.output[-1]
         if halted and amp == 4:
             break

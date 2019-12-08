@@ -18,7 +18,7 @@ class IntcodeVM(object):
         self.input = deque()
         self.output = []
 
-    def interpret_op(self, op):
+    def _interpret_op(self, op):
         modes = []
         o = op % 100
         op //= 100
@@ -36,9 +36,9 @@ class IntcodeVM(object):
     def _setV(self, offset, v):
         self.prog[self.prog[self.ip + offset]] = v
 
-    def run_to_block(self):
+    def runToBlock(self):
         while self.prog[self.ip] != 99:
-            op, modes = self.interpret_op(self.prog[self.ip])
+            op, modes = self._interpret_op(self.prog[self.ip])
             modes += [0] * (INST_PARAMS[op] - len(modes))
             
             values = []
