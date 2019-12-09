@@ -8,13 +8,15 @@ INST_PARAMS = {
     5: 2,
     6: 2,
     7: 3,
-    8: 3
+    8: 3,
+    9: 1
 }
 
 class IntcodeVM(object):
     def __init__(self, prog):
-        self.prog = list(prog)
+        self.prog = list(prog) + [0] * 10000
         self.ip = 0
+        self.relativeBase = 0
         self.input = deque()
         self.output = []
 
@@ -33,8 +35,11 @@ class IntcodeVM(object):
     def clearOutput(self):
         self.output = []
 
-    def _setV(self, offset, v):
-        self.prog[self.prog[self.ip + offset]] = v
+    def _setV(self, offset, v, mode):
+        if mode == 0:
+            self.prog[self.prog[self.ip + offset]] = v
+        elif mode == 2:
+            self.prog[self.prog[self.ip + offset] + self.relativeBase] = v
 
     def runToBlock(self):
         while self.prog[self.ip] != 99:
@@ -45,19 +50,21 @@ class IntcodeVM(object):
             for ix, mode in enumerate(modes):
                 if mode == 0:
                     values.append(self.prog[self.prog[self.ip+ix+1]])
+                elif mode == 2:
+                    values.append(self.prog[self.prog[self.ip+ix+1] + self.relativeBase])
                 else:
                     values.append(self.prog[self.ip+ix+1])
 
             skip_inc = False
             if op == 1:
-                self._setV(3, values[0] + values[1])
+                self._setV(3, values[0] + values[1], modes[2])
             elif op == 2:
-                self._setV(3, values[0] * values[1])
+                self._setV(3, values[0] * values[1], modes[2])
             elif op == 3:
                 if len(self.input) == 0:
                     # blocked
                     return False
-                self._setV(1, self.input.popleft())
+                self._setV(1, self.input.popleft(), modes[0])
             elif op == 4:
                 self.output.append(values[0])
             elif op == 5:
@@ -70,14 +77,16 @@ class IntcodeVM(object):
                     skip_inc = True
             elif op == 7:
                 if values[0] < values[1]:
-                    self._setV(3, 1)
+                    self._setV(3, 1, modes[2])
                 else:
-                    self._setV(3, 0)
+                    self._setV(3, 0, modes[2])
             elif op == 8:
                 if values[0] == values[1]:
-                    self._setV(3, 1)
+                    self._setV(3, 1, modes[2])
                 else:
-                    self._setV(3, 0)
+                    self._setV(3, 0, modes[2])
+            elif op == 9:
+                self.relativeBase += values[0]
             
             if not skip_inc:
                 self.ip += INST_PARAMS[op] + 1
