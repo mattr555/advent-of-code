@@ -87,13 +87,7 @@ while not all((xf, yf, zf)):
 
 
 from math import gcd
-g2 = gcd(yn, zn)
-g3 = gcd(xn, g2)
-# print(g3)
+def lcm(a, b):
+    return (a * b) // gcd(a, b)
 
-lcm2 = (yn * zn) // g2
-lcm3 = (xn * lcm2) // g3
-# print(lcm3)
-
-# ok i have no idea why it's divided by 2.
-print(lcm3 // 2)
+print(lcm(lcm(xn, yn), zn))
