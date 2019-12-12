@@ -10,6 +10,14 @@ class Planet(object):
         self.vy = 0
         self.vz = 0
     
+    def gravitate(self, other):
+        self.vx += sign(other.x - self.x)
+        other.vx -= sign(other.x - self.x)
+        self.vy += sign(other.y - self.y)
+        other.vy -= sign(other.y - self.y)
+        self.vz += sign(other.z - self.z)
+        other.vz -= sign(other.z - self.z)
+    
     def step(self):
         self.x += self.vx
         self.y += self.vy
@@ -36,12 +44,7 @@ def sign(x):
 from itertools import combinations
 def step():
     for a, b in combinations(data, 2):
-        a.vx += sign(b.x - a.x)
-        b.vx -= sign(b.x - a.x)
-        a.vy += sign(b.y - a.y)
-        b.vy -= sign(b.y - a.y)
-        a.vz += sign(b.z - a.z)
-        b.vz -= sign(b.z - a.z)
+        a.gravitate(b)
     
     for i in data:
         i.step()
@@ -49,45 +52,39 @@ def step():
 xs = {}
 ys = {}
 zs = {}
-xf = False
-yf = False
-zf = False
 s = 0
 xn, yn, zn = 0, 0, 0
 
-while not all((xf, yf, zf)):
-    xk = tuple([i.x for i in data] + [i.vx for i in data])
-    yk = tuple([i.y for i in data] + [i.vy for i in data])
-    zk = tuple([i.z for i in data] + [i.vz for i in data])
+while not all(i > 0 for i in (xn, yn, zn)):
+    if xn == 0:
+        xk = tuple([i.x for i in data] + [i.vx for i in data])
+        if xk in xs:
+            print(f"x cycle found at {xs[xk]} to {s}")
+            xn = s
+        else:
+            xs[xk] = s
 
-    if not xf and xk in xs:
-        # print(f"x cycle found at {xs[xk]} to {s}")
-        xf = True
-        xn = s
-    elif not xf:
-        xs[xk] = s
-    if not yf and yk in ys:
-        # print(f"y cycle found at {ys[yk]} to {s}")
-        yf = True
-        yn = s
-    elif not yf:
-        ys[yk] = s
-    if not zf and zk in zs:
-        # print(f"z cycle found at {zs[zk]} to {s}")
-        zf = True
-        zn = s
-    elif not zf:
-        zs[zk] = s
-    
+    if yn == 0:
+        yk = tuple([i.y for i in data] + [i.vy for i in data])
+        if yk in ys:
+            print(f"y cycle found at {ys[yk]} to {s}")
+            yn = s
+        else:
+            ys[yk] = s
+
+    if zn == 0:
+        zk = tuple([i.z for i in data] + [i.vz for i in data])
+        if zk in zs:
+            print(f"z cycle found at {zs[zk]} to {s}")
+            zn = s
+        else:
+            zs[zk] = s
+
     step()
     s += 1
 
     if s == 1000:
         print(sum([i.potential() * i.kinetic() for i in data]))
 
-
-from math import gcd
-def lcm(a, b):
-    return (a * b) // gcd(a, b)
 
 print(lcm(lcm(xn, yn), zn))

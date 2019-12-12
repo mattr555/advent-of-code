@@ -1,6 +1,7 @@
 from collections import defaultdict, deque, Counter
+from math import inf, gcd
 import itertools
-from math import inf
+import re
 
 def filemap(func, filename, sep='\n'):
     with open(filename) as f:
@@ -28,3 +29,6 @@ def denseGrid(r, c, val=None):
 
 FULL_BLOCK = "█"
 LIGHT_SHADE = "░"
+
+def lcm(a, b):
+    return (a * b) // gcd(a, b)
