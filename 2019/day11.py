@@ -38,7 +38,7 @@ part1 = run(BLACK)
 print(len(part1))
 
 part2 = run(WHITE)
-dg = denseGrid(7, 48, LIGHT_SHADE)
+dg = denseGrid(7, 48, FULL_BLOCK)
 for (x, y), val in part2.items():
     dg[y + 6][x] = FULL_BLOCK if val == BLACK else LIGHT_SHADE
 
