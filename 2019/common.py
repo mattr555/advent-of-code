@@ -39,4 +39,4 @@ def sign(x):
     return x // abs(x)
 
 def transpose(l):
-    return list(map(list, zip(*l))))
+    return list(map(list, zip(*l)))
