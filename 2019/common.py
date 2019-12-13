@@ -32,3 +32,11 @@ LIGHT_SHADE = "░"
 
 def lcm(a, b):
     return (a * b) // gcd(a, b)
+
+def sign(x):
+    if x == 0:
+        return 0
+    return x // abs(x)
+
+def transpose(l):
+    return list(map(list, zip(*l))))

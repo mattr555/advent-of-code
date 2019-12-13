@@ -1,4 +1,5 @@
 from common import *
+from itertools import combinations
 import re
 
 class Planet(object):
@@ -36,12 +37,6 @@ def m(l):
 
 data = filemap(m, "day12.txt")
 
-def sign(x):
-    if x == 0:
-        return 0
-    return x // abs(x)
-
-from itertools import combinations
 def step():
     for a, b in combinations(data, 2):
         a.gravitate(b)
