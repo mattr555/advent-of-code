@@ -29,6 +29,8 @@ def denseGrid(r, c, val=None):
 
 FULL_BLOCK = "█"
 LIGHT_SHADE = "░"
+MEDIUM_SHADE = "▒"
+DARK_SHADE = "▓"
 
 def lcm(a, b):
     return (a * b) // gcd(a, b)
