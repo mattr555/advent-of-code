@@ -1,13 +1,10 @@
 from common import *
-import math
 
 def m(l):
     ret = []
-    for ix, i in enumerate(l.replace(',', '').replace('=> ', '').strip().split(' ')):
-        if ix % 2 == 0:
-            ret.append(int(i))
-        else:
-            ret.append(i)
+    inp = l.replace(',', '').replace('=> ', '').strip().split(' ')
+    for i in range(0, len(inp), 2):
+        ret.append((int(inp[i]), inp[i+1]))
     return ret
 
 data = filemap(m, "day14.txt")
@@ -17,49 +14,45 @@ data = filemap(m, "day14.txt")
 # only one way to make each thing
 
 table = {}
-
 for i in data:
-    table[i[-1]] = (i[-2], i[:-2])
+    table[i[-1][1]] = (i[-1][0], i[:-1])
 
 def make(chem, required):
     recipe_amt, ingredients = table[chem]
     to_make = int(math.ceil(required[chem]/recipe_amt))
     ret = []
-    for i in range(0, len(ingredients), 2):
-        ret.append((to_make * ingredients[i], ingredients[i+1]))
+    for ing_amt, ing in ingredients:
+        ret.append((to_make * ing_amt, ing))
     return to_make * recipe_amt, ret
 
 def test(n):
     required = defaultdict(int)
     required['FUEL'] = n
-    q = deque(['FUEL'])
-    while any(i != 'ORE' for i in q):
-        chem = q.popleft()
-        if chem == 'ORE':
-            pass
-        elif required[chem] <= 0:
-            pass
-        else:
-            i_need = required[chem]
-            total_made, new_requires = make(chem, required)
-            for a, i in new_requires:
-                q.append(i)
-                required[i] += a
-            required[chem] = i_need - total_made
+    q = set(['FUEL'])
+    while len(q) > 0:
+        chem = q.pop()
+        if chem == 'ORE' or required[chem] <= 0:
+            continue
+
+        i_need = required[chem]
+        total_made, new_requires = make(chem, required)
+        for a, i in new_requires:
+            q.add(i)
+            required[i] += a
+        required[chem] = i_need - total_made
     return required['ORE']
 
 
 print(test(1))
 
-min_ = 1
-max_ = 1000000000
-while min_ < max_:
-    t = (min_ + max_) // 2
+lo = 1
+hi = 10000000
+while lo < hi:
+    t = (lo + hi) // 2
     res = test(t)
     if res <= 1000000000000:
-        min_ = t+1
+        lo = t+1
     else:
-        max_ = t-1
+        hi = t-1
 
-print(max_)
-
+print(hi)
