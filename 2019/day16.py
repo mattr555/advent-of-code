@@ -22,7 +22,7 @@ def runPhase(l):
 p1data = list(data)
 for i in range(100):
     p1data = runPhase(p1data)
-print(''.join(map(str, data[:8])))
+print(''.join(map(str, p1data[:8])))
 
 def runPhase2(l):
     prefixes = []
