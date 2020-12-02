@@ -48,3 +48,6 @@ def sign(x):
 
 def transpose(l):
     return list(map(list, zip(*l)))
+
+def getitem(ix):
+    return lambda i: i[ix]

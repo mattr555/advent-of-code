@@ -12,7 +12,13 @@ for i in data:
         s.add(TARGET - i)
 
 #part 2
+s = set(data)
 for i in range(len(data)):
     for j in range(i+1, len(data)):
-        if (TARGET - data[i] - data[j]) in data[j+1:]:
-            print(data[i] * data[j] * (TARGET - data[i] - data[j]))
+        k = (TARGET - data[i] - data[j])
+        if k in s:
+            print(data[i] * data[j] * k)
+            break
+    else:
+        continue
+    break
