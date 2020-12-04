@@ -4,9 +4,12 @@ from math import inf, gcd
 import itertools
 import re
 
-def filemap(func, filename, sep='\n'):
+def filemap(func, filename, sep='\n', chunksize=None):
     with open(filename) as f:
-        return list(map(func, f.read().strip().split(sep)))
+        raw = f.read().strip().split(sep)
+        if chunksize:
+            raw = chunk(raw, chunksize)
+        return list(map(func, raw))
 
 
 DIRECTIONS = {
