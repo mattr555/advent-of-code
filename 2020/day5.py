@@ -8,10 +8,7 @@ data = filemap(parse, 'day5.txt')
 
 print(max(data))
 
-lasti = list(sorted(data))[0] - 1
-for i in sorted(data):
-    if lasti == i - 1:
-        pass
-    else:
-        print(i - 1)
-    lasti = i
+for i, j in zip(sorted(data), range(min(data), max(data))):
+    if i != j:
+        print(j)
+        break
