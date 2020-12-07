@@ -8,9 +8,8 @@ for group in data:
     s = set(group)
     s = s - set('\n')
     p1 += len(s)
-    all = set(s)
     for line in group.split('\n'):
-        s -= all - set(line)
+        s = s.intersection(set(line))
     p2 += len(s)
 
 print(p1)
