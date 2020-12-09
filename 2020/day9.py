@@ -14,11 +14,14 @@ for i in range(25, len(data)):
         p1 = target
         break
 
-for i in range(len(data)):
-    s = data[i]
-    for j in range(i+1, len(data)):
-        s += data[j]
-        if s == p1:
-            print(min(data[i:j+1]) + max(data[i:j+1]))
-        elif s > p1:
-            break
+start = 0
+end = 2
+s = data[start] + data[end-1]
+while s != p1:
+    if s < p1:
+        s += data[end]
+        end += 1
+    else:
+        s -= data[start]
+        start += 1
+print(min(data[start:end]) + max(data[start:end]))
