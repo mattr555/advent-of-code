@@ -30,6 +30,16 @@ DIRECTIONS = {
     3: (-1, 0), 
 }
 
+DIRECTIONS_DIAGS = {
+    (1, 0),
+    (1, 1),
+    (0, 1),
+    (-1, 1),
+    (-1, 0),
+    (-1, -1),
+    (0, -1),
+    (1, -1)
+}
 
 def chunk(l, n):
     return [l[i*n:(i+1)*n] for i in range(len(l) // n)]
