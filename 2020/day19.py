@@ -1,7 +1,8 @@
 from common import *
 
-# note: had to modify the input to convert to Chomsky normal form
-# in part 1, cases to change were 8 and 44
+# note: had to manually modify the input to convert to Chomsky normal form
+# in part 1, rules to change were 8 and 44
+# in part 2, I had to further modify 8, as well as add a new rule for the ternary node in 11
 
 unit_productions = defaultdict(set)
 def parseRule(s):
@@ -21,24 +22,24 @@ total_rules = max(rules.keys()) + 1
 print(rules)
 print(tests)
 
-def denseGrid(x, y, z, val=None):
-    return [[[val] * z for _ in range(y)] for _ in range(x)]
-
 # pseudocode yoinked from https://en.wikipedia.org/wiki/CYK_algorithm
+# kept the 1-indexing from the pseudocode. that's why some of it is funky below
+# using a set instead of a boolean array for the inner-most dimension
 def parse(st):
-    cyk_grid = denseGrid(len(st)+1, len(st)+1, total_rules, val=False)
+    cyk_grid = [[set() for _ in range(len(st)+1)] for _ in range(len(st)+1)]
     for ix, ch in enumerate(st):
         for r_a in unit_productions[ch]:
-            cyk_grid[1][ix+1][r_a] = True
+            cyk_grid[1][ix+1].add(r_a)
+
     for l in range(2, len(st)+1):
         for s in range(1, len(st)-l+2):
             for p in range(1, l):
                 for r_a, rule_set in rules.items():
-                    for rule in rule_set:
-                        if cyk_grid[p][s][rule[0]] and cyk_grid[l-p][s+p][rule[1]]:
-                            cyk_grid[l][s][r_a] = True
-    
-    if cyk_grid[len(st)][1][0]:
+                    for r_b, r_c in rule_set:
+                        if r_b in cyk_grid[p][s] and r_c in cyk_grid[l-p][s+p]:
+                            cyk_grid[l][s].add(r_a)
+
+    if 0 in cyk_grid[len(st)][1]:
         print(st, "good")
         return True
     print(st, "no good")
