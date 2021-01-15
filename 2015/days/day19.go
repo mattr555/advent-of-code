@@ -2,19 +2,9 @@ package days
 
 import (
 	"fmt"
+	"regexp"
 	"strings"
 )
-
-/*
-TODO: cheated by looking at the solution thread
-
-Transformations only of the form
-
-X => X X
-X => X Rn X Ar
-X => X Rn X Y X Ar
-X => X Rn X Y X Y X Ar
-*/
 
 type transformation struct {
 	in  string
@@ -58,19 +48,35 @@ func Nineteen(lines []string) {
 
 	fmt.Println(len(runTransform(transformations, map[string]bool{molecule: true})))
 
-	thisStep := map[string]bool{
-		molecule: true,
+	/*
+		part 2: cheated by looking at the solution thread
+
+		Transformations only of the form
+
+		X => X X
+		X => X Rn X Ar
+		X => X Rn X Y X Ar
+		X => X Rn X Y X Y X Ar
+
+		so you can come up with a closed form to solve it
+	*/
+
+	reg := regexp.MustCompile(`[A-Z][a-z]?`)
+	atomArr := reg.FindAll([]byte(molecule), -1)
+	atoms := make([]string, len(atomArr))
+	for ix, i := range atomArr {
+		atoms[ix] = string(i)
 	}
 
-	c := 0
-	for {
-		nextStep := runTransform(reversed, thisStep)
-		thisStep = nextStep
-		c++
-		if _, ok := thisStep["e"]; ok {
-			break
+	rnArCt := 0
+	yCt := 0
+	for _, i := range atoms {
+		switch i {
+		case "Rn", "Ar":
+			rnArCt++
+		case "Y":
+			yCt++
 		}
-		fmt.Println(c)
 	}
-	fmt.Println(c)
+	fmt.Println(len(atoms) - rnArCt - 2*yCt - 1)
 }

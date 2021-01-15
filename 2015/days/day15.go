@@ -41,7 +41,6 @@ func Fifteen(lines []string) {
 		cal, _ := strconv.Atoi(string(matches[5]))
 		ingredients[ix] = ingredient{c, d, f, t, cal}
 	}
-	fmt.Println(ingredients)
 
 	c := make(chan []int)
 	go func() {

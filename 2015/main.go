@@ -33,10 +33,31 @@ var dayMap = map[string]func([]string){
 	"19": days.Nineteen,
 	"20": days.Twenty,
 	"21": days.Twentyone,
+	"22": days.Twentytwo,
+	"23": days.Twentythree,
+	"24": days.Twentyfour,
+	"25": days.Twentyfive,
 }
 
 func main() {
 	d := os.Args[1]
+
+	if d == "all" {
+		var total time.Duration
+		for i := 1; i <= 25; i++ {
+			fmt.Printf("---Day %d---\n", i)
+			el := runDay(strconv.Itoa(i))
+			total += el
+			fmt.Printf("execution took %s\n", el)
+		}
+		fmt.Printf("-------\nTotal execution time: %s\nAverage execution time: %s\n", total, total/25)
+	} else {
+		elapsed := runDay(d)
+		fmt.Printf("execution took %s\n", elapsed)
+	}
+}
+
+func runDay(d string) time.Duration {
 	callFunc, ok := dayMap[d]
 	if !ok {
 		panic("day not found")
@@ -48,13 +69,13 @@ func main() {
 		filename = os.Args[2]
 	}
 
-	filecontents, err := ioutil.ReadFile(filename)
+	fileContents, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(fmt.Sprintf("bad file %s", filename))
 	}
 
 	start := time.Now()
-	callFunc(strings.Split(strings.Trim(string(filecontents), "\n"), "\n"))
+	callFunc(strings.Split(strings.Trim(string(fileContents), "\n"), "\n"))
 	elapsed := time.Since(start)
-	fmt.Printf("execution took %s\n", elapsed)
+	return elapsed
 }
