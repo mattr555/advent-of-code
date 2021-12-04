@@ -63,5 +63,14 @@ def sign(x):
 def transpose(l):
     return list(map(list, zip(*l)))
 
+def diag(b, opposite=False):
+    d = []
+    for ix in range(len(b)):
+        if opposite:
+            d.append(b[ix][-(ix+1)])
+        else:
+            d.append(b[ix][ix])
+    return d
+
 def getitem(ix):
     return lambda i: i[ix]
