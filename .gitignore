@@ -29,3 +29,6 @@ MANIFEST
 .vscode/settings.json
 
 .idea
+
+**/secret.txt
+**/day*.txt
