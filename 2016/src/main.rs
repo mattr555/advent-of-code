@@ -19,12 +19,15 @@ fn main() -> Result<(), Box<dyn Error>> {
         ("6", Box::new(days::day06::day06) as DayRunner),
         ("7", Box::new(days::day07::day07) as DayRunner),
         ("8", Box::new(days::day08::day08) as DayRunner),
+        ("9", Box::new(days::day09::day09) as DayRunner),
+        ("10", Box::new(days::day10::day10) as DayRunner),
     ]);
 
     let mut args = std::env::args().skip(1);
     let day = match args.next() {
         Some(d) => d,
-        None => return Err("Usage: aoc-2016 <day> [<inputfile>]".into())
+        // None => return Err("Usage: aoc-2016 <day> [<inputfile>]".into())
+        None => "10".to_string()
     };
 
     let func = match funcs.get(day.as_str()) {
